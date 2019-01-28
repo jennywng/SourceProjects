@@ -1,27 +1,22 @@
-import React, { Component } from 'react';
-import MyList from "./MyList";
-// import userInputs from "/userInputs"
-
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import List from "./List";
+import Input from "./Input";
 class App extends Component {
   state = {
-    toDoList: [],
-    // tasks: [],
-    // endTimes: [],
-    // userTask: "",
-    // userTime: ""
-  }
-  addToList = {date, task} => {
+    todoList: []
+  };
+  addToList = (date, task) => {
     this.setState({
-      toDoList: this.state.toDoList.concat(date, task)
+      todoList: this.state.todoList.concat({ date, task })
     });
-  }
-
-
+  };
   render() {
     return (
-      <div className="App">
-        <Input addToList={this.addToList}/>
-        <List toDoList={this.state.toDoList}/>
+      <div>
+        <Input addToList={this.addToList} />
+        <List todoList={this.state.todoList} />
       </div>
     );
   }

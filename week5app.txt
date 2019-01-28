@@ -1,0 +1,74 @@
+import React, { Component } from 'react';
+import axios from "axios"
+
+const mapJokes = jokes => {
+  return jokes.map(row => 
+    <div>
+      <li>
+        {row} 
+      </li>
+    </div>);
+};
+
+
+class App extends Component {
+  state = {
+    top: 0,
+    posts: null,
+    jokes: null
+  };
+
+  componentDidMount() {
+    axios.get("https://www.reddit.com/r/dadjokes.json").then(response => {
+      console.log(response);
+      const allPosts = response.data.data.children;
+      console.log(allPosts);
+      this.setState({ posts: allPosts});
+    });
+  }
+
+  showJokes = () => {
+    let jokeList = [];
+    for (let i = 0; i < this.state.top; i++) {
+      jokeList.push(this.state.posts[i].data.title);
+      jokeList.push(this.state.posts[i].data.selftext);
+    };
+
+    this.setState({
+      jokes : jokeList
+    });
+
+  };
+  
+  renderJokes = () => {
+   return this.state.jokes !== null && mapJokes(this.state.jokes);
+  }
+  
+
+  render() {
+    return (
+      <div className="App">
+        <input
+          value = {this.state.top}
+          // type="number"
+          placeholder = "How many jokes?"
+          onChange = {
+            e => this.setState({top: e.target.value})
+          }>
+        </input>
+
+        <button onClick={() => {
+          this.showJokes();
+        }}>
+          Show Jokes!
+        </button>
+
+        <ul>
+          {this.renderJokes()}
+        </ul>
+      </div>
+    );
+  }
+}
+
+export default App;
